@@ -1,0 +1,39 @@
+﻿@model ToDoListMvc.Models.TaskItem
+
+@{
+    ViewData["Title"] = "Apagar Tarefa";
+}
+
+<h1>Apagar Tarefa</h1>
+
+<h3>Tem a certeza de que pretende apagar esta tarefa?</h3>
+<div>
+    <h4>Detalhes da Tarefa</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.IsCompleted ? "Sim" : "Não")
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Apagar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+    </form>
+</div>

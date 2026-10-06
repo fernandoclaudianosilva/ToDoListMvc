@@ -1,15 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+using ToDoListMvc.Data;
+using ToDoListMvc.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 1. PRIMEIRO: Registas todos os serviços (incluindo o DbContext e os Scopes)
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
+
+builder.Services.AddScoped<ITaskService, TaskService>();
+
+// 2. DEPOIS: Constróis a aplicação
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 3. POR FIM: Configuras o pipeline HTTP (Middleware)
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -22,6 +32,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Tasks}/{action=Index}/{id?}");
 
 app.Run();
